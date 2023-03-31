@@ -1,3 +1,3 @@
 # VCS
 
-A collection of helpers ...
+A collection of helpers for version control systems. 
