@@ -106,6 +106,31 @@ func Test_CleanVersions(t *testing.T) {
 	aTest.MustBeEqual(CleanVersions(vers), expectedCleanVers)
 }
 
+func Test_LatestVersion(t *testing.T) {
+	aTest := tester.New(t)
+
+	vers := []*Version{
+		{Major: 1, Minor: 2, Patch: 3, Postfix: "not clean"},
+	}
+	expectedLatestVersion := (*Version)(nil)
+	aTest.MustBeEqual(LatestVersion(vers), expectedLatestVersion)
+
+	vers = []*Version{
+		{Major: 1, Minor: 2, Patch: 3, Postfix: "not clean"},
+		{Major: 1, Minor: 2, Patch: 3, Postfix: ""},
+	}
+	expectedLatestVersion = &Version{Major: 1, Minor: 2, Patch: 3, Postfix: ""}
+	aTest.MustBeEqual(LatestVersion(vers), expectedLatestVersion)
+
+	vers = []*Version{
+		{Major: 1, Minor: 2, Patch: 3, Postfix: "not clean"},
+		{Major: 1, Minor: 2, Patch: 4, Postfix: ""},
+		{Major: 1, Minor: 2, Patch: 3, Postfix: ""},
+	}
+	expectedLatestVersion = &Version{Major: 1, Minor: 2, Patch: 4, Postfix: ""}
+	aTest.MustBeEqual(LatestVersion(vers), expectedLatestVersion)
+}
+
 func Test_IsEqualTo(t *testing.T) {
 	aTest := tester.New(t)
 

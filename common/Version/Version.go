@@ -85,6 +85,29 @@ func CleanVersions(in []*Version) (out []*Version) {
 	return out
 }
 
+// LatestVersion returns the latest version of specified versions.
+func LatestVersion(vs []*Version) (lv *Version) {
+	vs = CleanVersions(vs)
+	if len(vs) == 0 {
+		return nil
+	}
+
+	lv = vs[0]
+	var isGreater bool
+	var err error
+	for _, v := range vs {
+		isGreater, err = v.IsGreaterThan(lv)
+		if err != nil {
+			continue
+		}
+		if isGreater {
+			lv = v
+		}
+	}
+
+	return lv
+}
+
 // IsEqualTo tells if the version is equal to a specified version.
 func (v *Version) IsEqualTo(that *Version) (isEqual bool) {
 	return (v.Major == that.Major) &&
