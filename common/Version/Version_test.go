@@ -80,6 +80,20 @@ func Test_New(t *testing.T) {
 	fmt.Println()
 }
 
+func Test_ToString(t *testing.T) {
+	aTest := tester.New(t)
+	var v *Version
+
+	v = &Version{Postfix: "-x"}
+	aTest.MustBeEqual(v.ToString(), "v0.0.0-x")
+
+	v = &Version{Major: 1, Minor: 2, Patch: 3, Postfix: "-rc42"}
+	aTest.MustBeEqual(v.ToString(), "v1.2.3-rc42")
+
+	v = &Version{Major: 11, Minor: 22, Patch: 33}
+	aTest.MustBeEqual(v.ToString(), "v11.22.33")
+}
+
 func Test_IsClean(t *testing.T) {
 	aTest := tester.New(t)
 	var v *Version

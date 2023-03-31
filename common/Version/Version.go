@@ -10,6 +10,10 @@ import (
 )
 
 const (
+	VersionFormat = "v%d.%d.%d%s"
+)
+
+const (
 	ErrPartsCount              = "parts count error: %v vs %v"
 	ErrVersionsAreIncomparable = "versions are incomparable"
 )
@@ -63,6 +67,14 @@ func New(versionStr string) (v *Version, err error) {
 	v.Postfix = parts[2][idx[1]:]
 
 	return v, nil
+}
+
+// ToString returns a textual representation of a version.
+// This representation may be slightly different from the original parsed
+// version while this object uses its own format for formatting versions.
+// E.g. a version parsed from 'Ver.1.2.3' will be formatted as 'v1.2.3'.
+func (v *Version) ToString() string {
+	return fmt.Sprintf(VersionFormat, v.Major, v.Minor, v.Patch, v.Postfix)
 }
 
 // IsClean checks whether the version has only numeric information without any
