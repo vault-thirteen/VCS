@@ -143,6 +143,19 @@ func Test_LatestVersion(t *testing.T) {
 	}
 	expectedLatestVersion = &Version{Major: 1, Minor: 2, Patch: 4, Postfix: ""}
 	aTest.MustBeEqual(LatestVersion(vers), expectedLatestVersion)
+
+	vers = []*Version{
+		{Major: 1, Minor: 2, Patch: 3, Postfix: "test"},
+		{Major: 1, Minor: 2, Patch: 3, Postfix: "test"},
+	}
+	aTest.MustBeEqual(LatestVersion(vers), (*Version)(nil))
+
+	vers = []*Version{
+		{Major: 1, Minor: 2, Patch: 3, Postfix: ""},
+		{Major: 1, Minor: 2, Patch: 3, Postfix: ""},
+	}
+	expectedLatestVersion = &Version{Major: 1, Minor: 2, Patch: 3, Postfix: ""}
+	aTest.MustBeEqual(LatestVersion(vers), expectedLatestVersion)
 }
 
 func Test_IsEqualTo(t *testing.T) {
@@ -206,6 +219,12 @@ func Test_IsGreaterThan(t *testing.T) {
 
 	vA = &Version{Major: 1, Minor: 2, Patch: 3, Postfix: "test"}
 	vB = &Version{Major: 1, Minor: 2, Patch: 99, Postfix: "test"}
+	isGreater, err = vA.IsGreaterThan(vB)
+	aTest.MustBeNoError(err)
+	aTest.MustBeEqual(isGreater, false)
+
+	vA = &Version{Major: 1, Minor: 2, Patch: 3, Postfix: "test"}
+	vB = &Version{Major: 1, Minor: 2, Patch: 3, Postfix: "test"}
 	isGreater, err = vA.IsGreaterThan(vB)
 	aTest.MustBeNoError(err)
 	aTest.MustBeEqual(isGreater, false)

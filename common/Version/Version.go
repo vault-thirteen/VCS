@@ -149,6 +149,10 @@ func (v *Version) IsGreaterThan(that *Version) (isGreater bool, err error) {
 		return false, nil
 	}
 
+	if v.Postfix == that.Postfix {
+		return false, nil
+	}
+
 	// Patch versions are equal.
 	// We can not compare version further.
 	return false, fmt.Errorf(ErrVersionsAreIncomparable, v.ToString(), that.ToString())
