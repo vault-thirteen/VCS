@@ -1,7 +1,6 @@
 package ver
 
 import (
-	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -15,7 +14,7 @@ const (
 
 const (
 	ErrPartsCount              = "parts count error: %v vs %v"
-	ErrVersionsAreIncomparable = "versions are incomparable"
+	ErrVersionsAreIncomparable = "versions are incomparable: %v vs %v"
 )
 
 type Version struct {
@@ -152,5 +151,5 @@ func (v *Version) IsGreaterThan(that *Version) (isGreater bool, err error) {
 
 	// Patch versions are equal.
 	// We can not compare version further.
-	return false, errors.New(ErrVersionsAreIncomparable)
+	return false, fmt.Errorf(ErrVersionsAreIncomparable, v.ToString(), that.ToString())
 }
